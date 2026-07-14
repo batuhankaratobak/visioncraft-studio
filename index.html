@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionCraft Studio</title>
+    <link rel="stylesheet" href="styles/navbar.css">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+        .main-content {
+            display: flex;
+            padding-top: 5rem;
+            min-height: calc(100vh - 100px);
+        }
+        .sidebar {
+            width: 20%;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        .sidebar button {
+            display: block;
+            margin: 0.5rem 0;
+            padding: 0.7rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #40E0D0;
+            color: white;
+            width: 100%;
+        }
+        .sidebar button:hover {
+            background-color: #48D1CC;
+        }
+        .content-area {
+            flex: 1;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+        }
+        .controls {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1.5rem;
+            border-radius: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(64, 224, 208, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .controls button {
+            background: rgba(64, 224, 208, 0.2);
+            color: white;
+            border: 1px solid rgba(64, 224, 208, 0.3);
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .controls button:hover {
+            transform: translateY(-3px);
+            background: rgba(64, 224, 208, 0.3);
+            box-shadow: 0 5px 15px rgba(64, 224, 208, 0.2);
+            border-color: rgba(64, 224, 208, 0.5);
+        }
+        .controls button:active {
+            transform: translateY(-1px);
+        }
+        .controls button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(64, 224, 208, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .controls button:hover::before {
+            transform: translateX(100%);
+        }
+        .controls button i {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+        .controls button:hover i {
+            transform: scale(1.1);
+        }
+        .controls button[data-tooltip] {
+            position: relative;
+        }
+        .controls button[data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(26, 26, 46, 0.95);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(64, 224, 208, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .controls button[data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .controls input, .controls button {
+            margin: 0.5rem;
+            padding: 0.7rem 1.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .controls button {
+            background-color: #40E0D0;
+            color: white;
+        }
+        .controls button:hover {
+            background-color: #48D1CC;
+        }
+        .controls input[type="file"] {
+            background-color: white;
+            color: black;
+        }
+        canvas {
+            border: 1px solid black;
+            background-color: white;
+            max-width: 90%;
+            height: auto;
+        }
+        .footer {
+            background-color: rgba(51, 51, 51, 0.9);
+            padding: 2rem 0;
+            text-align: center;
+            backdrop-filter: blur(8px);
+        }
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #40E0D0;
+        }
+        .footer-text {
+            color: #fff;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo" onclick="reloadPage()">Home</div>
+        <div class="menu" onclick="goToAbout()">About</div>
+    </nav>
+
+    <div class="main-content">
+        <!-- Filter Buttons -->
+        <div class="sidebar">
+            <!-- Brightness/Contrast Controls -->
+            <div class="adjustment-controls">
+                <label for="brightnessRange">Brightness:</label>
+                <input type="range" id="brightnessRange" min="-100" max="100" value="0">
+                <label for="contrastRange">Constrast:</label>
+                <input type="range" id="contrastRange" min="-100" max="100" value="0">
+                <button onclick="applyAdjustments()">Apply</button>
+            </div>
+
+            <!-- AI Filters Heading -->
+            <h3 class="filter-heading">AI Filters</h3>
+            
+            <!-- AI Filter Buttons -->
+            <button onclick="detectObjects()">Detect Objects</button>
+            <button onclick="removeBackground()">Remove Background</button>
+            <button onclick="repairImage()">Repair Image</button>
+
+            <!-- Existing Filter Buttons -->
+            <h3 class="filter-heading">Classic Filters</h3>
+            <button onclick="applyRandomFilter()" data-tooltip="Applies a random filter!">🎲 Surprise</button>
+            <button onclick="applyFilter('sketch')" data-tooltip="Applies sketch effect.">Sketch</button>
+            <button onclick="applyFilter('cartoon')" data-tooltip="Applies cartoon effect.">Cartoon</button>
+            <button onclick="applyFilter('colorseparate')" data-tooltip="Enhances red channel.">Color Separate</button>
+            <button onclick="applyFilter('sepia')" data-tooltip="Applies sepia (vintage) effect.">Sepia</button>
+            <button onclick="applyFilter('negative')" data-tooltip="Applies negative color effect.">Negative</button>
+            <button onclick="applyFilter('grayscale')" data-tooltip="Applies black and white effect.">Black & White</button>
+            <button onclick="applyFilter('mosaic')" data-tooltip="Applies mosaic effect.">Mosaic</button>
+            <button onclick="applyFilter('watercolor')" data-tooltip="Applies watercolor effect.">Watercolor</button>
+            <button onclick="applyFilter('sticker')" data-tooltip="Applies sticker effect.">Sticker Maker</button>
+
+            <div class="sidebar-item">
+                <div class="sidebar-title">Image Effects</div>
+                <div class="sidebar-content">
+                    <button class="sidebar-button" data-filter="enhance-details">Enhance Details</button>
+                    <button class="sidebar-button" data-filter="sharpen">Sharpen</button>
+                    <button class="sidebar-button" data-filter="blur">Blur</button>
+                    <button class="sidebar-button" data-filter="fix-shadows">Fix Shadows</button>
+                    <button class="sidebar-button" data-filter="increase-vibrance">Increase Vibrance</button>
+                    <button class="sidebar-button" data-filter="color-tone">Color Tone</button>
+                    <button class="sidebar-button" data-filter="fade">Fade</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Canvas Area -->
+        <div class="content-area">
+            <div class="controls">
+                <div class="edit-controls">
+                    <button onclick="undo()">Undo</button>
+                    <button onclick="redo()">Redo</button>
+                    <button onclick="rotateLeft()">Rotate Left</button>
+                    <button onclick="rotateRight()">Rotate Right</button>
+                    <button onclick="flipHorizontal()">Flip Horizontal</button>
+                    <button onclick="flipVertical()">Flip Vertical</button>
+                    <button onclick="cropImage()">Crop</button>
+                    <button onclick="resizeImage()">Resize</button>
+                    <button onclick="saveSettings()">Save</button>
+                    <button id="drawModeBtn" onclick="toggleDrawMode()" data-tooltip="Switches to drawing mode.">🖌️ Drawing Mode</button>
+                    <input type="color" id="brushColor" value="#ff0000" style="display:none; margin-left:8px; width:36px; height:36px; vertical-align:middle;">
+                    <input type="range" id="brushSize" min="2" max="32" value="6" style="display:none; margin-left:8px; width:80px; vertical-align:middle;">
+                    <button id="eraserBtn" onclick="toggleEraser()" style="display:none; margin-left:8px; vertical-align:middle;" data-tooltip="Switches to eraser mode.">🧽 Eraser</button>
+                    <button id="stickerGalleryBtn" onclick="openStickerGallery()" data-tooltip="Add ready-made sticker.">🌟 Add Sticker</button>
+                </div>
+                <input type="file" id="imageInput" accept="image/*" value="Select File">
+                <div class="download-buttons">
+                    <button id="downloadPNG">Download PNG</button>
+                    <button id="downloadJPG">Download JPG</button>
+                </div>
+            </div>
+            <div id="canvasContainer" style="display:flex; justify-content:center; align-items:center; width:100%;">
+                <canvas id="canvas" class="main-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="social-icons">
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="footer-text">
+            &copy; 2025 VisionCraft Studio.
+        </div>
+    </footer>
+
+    <div class="chatbot-widget" id="chatbotWidget">
+        <button class="chatbot-toggle" id="chatbotToggle" type="button" aria-label="Open image assistant">
+            <i class="fas fa-comments"></i>
+        </button>
+
+        <div class="chatbot-panel" id="chatbotPanel" aria-live="polite">
+            <div class="chatbot-header">
+                <div>
+                    <h3>Image Assistant</h3>
+                    <span>Filter guidance</span>
+                </div>
+                <button class="chatbot-close" id="chatbotClose" type="button" aria-label="Close image assistant">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="chatbot-messages" id="chatbotMessages"></div>
+
+            <div class="chatbot-quick-actions" id="chatbotQuickActions">
+                <button type="button" data-chat-action="artistic">Artistic</button>
+                <button type="button" data-chat-action="vintage">Vintage</button>
+                <button type="button" data-chat-action="clean">Clean up</button>
+                <button type="button" data-chat-action="fun">Fun</button>
+            </div>
+
+            <form class="chatbot-input-row" id="chatbotForm">
+                <input type="text" id="chatbotInput" autocomplete="off" placeholder="Ask for a filter..." aria-label="Ask the image assistant">
+                <button type="submit" aria-label="Send message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.2/dist/coco-ssd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@0.1.1632777926/selfie_segmentation.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3/drawing_utils.js"></script>
+    <script src="script.js"></script>
+    <script type="module" src="src/app.js"></script>
+
+    <script>
+        function goToAbout() {
+            window.location.href = 'about.html';
+        }
+    </script>
+
+    <!-- Onboarding Modal -->
+    <div id="onboardingModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:10002; justify-content:center; align-items:center; pointer-events:auto;">
+      <div id="onboardingContent" style="background:rgba(30,30,30,0.98); color:#fff; border-radius:20px; max-width:480px; min-width:320px; padding:2.5rem 2rem; text-align:center; box-shadow:0 8px 32px 8px #40E0D088; font-size:1.2rem; font-family:inherit; pointer-events:auto;">
+        <div id="onboardingStepText" style="margin-bottom:2rem; line-height:1.6;"></div>
+        <button id="onboardingNext" style="margin:1rem 0.5rem; padding:0.7rem 2.2rem; border:none; border-radius:10px; background:#40E0D0; color:white; font-weight:bold; font-size:1.1rem; cursor:pointer;">Next</button>
+        <button id="onboardingClose" style="margin:1rem 0.5rem; padding:0.7rem 2.2rem; border:none; border-radius:10px; background:#888; color:white; font-weight:bold; font-size:1.1rem; cursor:pointer;">Close</button>
+      </div>
+    </div>
+    <!-- Onboarding Highlight Overlay -->
+    <div id="onboardingHighlight" style="display:none; position:fixed; z-index:10000; pointer-events:none;"></div>
+    <div id="onboardingArrow" style="display:none; position:fixed; z-index:10001; pointer-events:none;"></div>
+    <!-- Tooltip Container -->
+    <div id="tooltip" style="display:none; position:fixed; z-index:20000; background:rgba(30,30,30,0.98); color:#fff; padding:0.6rem 1.1rem; border-radius:8px; font-size:1rem; box-shadow:0 4px 16px #40E0D088; pointer-events:none; max-width:260px; line-height:1.4;"></div>
+    <!-- Sticker Gallery Modal -->
+    <div id="stickerGalleryModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:20000; justify-content:center; align-items:center;">
+      <div style="background:white; border-radius:18px; padding:2rem; max-width:600px; text-align:center; box-shadow:0 8px 32px #40E0D088;">
+        <h3 style="color:#40E0D0; margin-bottom:1.5rem;">Sticker Gallery</h3>
+        <div id="stickerList" style="display:flex; flex-wrap:wrap; gap:1.2rem; justify-content:center;">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f31f.png" alt="star" class="sticker-option" style="width:64px; height:64px; cursor:pointer;">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f496.png" alt="kalp" class="sticker-option" style="width:64px; height:64px; cursor:pointer;">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f60e.png" alt="cool" class="sticker-option" style="width:64px; height:64px; cursor:pointer;">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f47b.png" alt="ghost" class="sticker-option" style="width:64px; height:64px; cursor:pointer;">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f525.png" alt="fire" class="sticker-option" style="width:64px; height:64px; cursor:pointer;">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f451.png" alt="crown" class="sticker-option" style="width:64px; height:64px; cursor:pointer;">
+        </div>
+        <button onclick="closeStickerGallery()" style="margin-top:2rem; padding:0.7rem 2.2rem; border:none; border-radius:10px; background:#40E0D0; color:white; font-weight:bold; font-size:1.1rem; cursor:pointer;">Close</button>
+      </div>
+    </div>
+</body>
+</html>

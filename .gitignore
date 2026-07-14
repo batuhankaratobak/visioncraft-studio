@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+._*
+
+# Editor settings
+.vscode/
+.idea/
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
