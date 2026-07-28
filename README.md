@@ -26,6 +26,16 @@ The goal of this project is to provide basic and intermediate image processing f
 - Bottom-right English filter recommendation chatbot
 - About page and developer profile
 
+## Screenshots
+
+### Main Editor
+
+![VisionCraft Studio main editor](docs/screenshots/main-editor.png)
+
+### Image Assistant
+
+![VisionCraft Studio image assistant](docs/screenshots/chatbot-assistant.png)
+
 ## Image Processing Filters
 
 The application includes several JavaScript-based pixel manipulation filters:
