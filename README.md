@@ -1,30 +1,8 @@
 # VisionCraft Studio
 
-VisionCraft Studio is a browser-based image processing and photo editing project. Users can upload an image, apply filters, use basic editing tools, and download the edited result as PNG or JPG.
+VisionCraft Studio is a browser-based image filtering and photo editing application that I developed as a graduation project. The main idea is simple: upload an image, try different filters or editing tools, and export the edited result as PNG or JPG.
 
-This project was developed as a graduation project at Antalya Bilim University. It combines image processing algorithms, the HTML Canvas API, JavaScript-based pixel manipulation, a modular frontend structure, and an interactive user interface.
-
-## Project Goal
-
-The goal of this project is to provide basic and intermediate image processing features through a user-friendly web interface. The application is designed to run directly in the browser without requiring a desktop image editing program.
-
-## Key Features
-
-- Image upload and canvas preview
-- PNG and JPG export
-- Brightness and contrast adjustment
-- Undo and redo actions
-- Left and right rotation
-- Horizontal and vertical flipping
-- Mouse-based cropping
-- Selected-area resizing
-- Free drawing mode
-- Eraser mode
-- Sticker insertion, dragging, and resizing
-- First-visit onboarding flow
-- Tooltip-supported controls
-- Bottom-right English filter recommendation chatbot
-- About page and developer profile
+The project is built with HTML, CSS, JavaScript, the Canvas API, and a lightweight feature-based ES Modules structure. I also added a small rule-based Image Assistant that helps users choose filters based on the style they want.
 
 ## Screenshots
 
@@ -36,9 +14,24 @@ The goal of this project is to provide basic and intermediate image processing f
 
 ![VisionCraft Studio image assistant](docs/screenshots/chatbot-assistant.png)
 
-## Image Processing Filters
+## What It Can Do
 
-The application includes several JavaScript-based pixel manipulation filters:
+- Upload an image and preview it on a canvas
+- Apply classic image filters
+- Adjust brightness and contrast
+- Rotate and flip images
+- Crop and resize selected areas
+- Use undo and redo
+- Draw on the image
+- Use an eraser
+- Add and resize stickers
+- Export the result as PNG or JPG
+- Get filter suggestions from the built-in Image Assistant
+- See a short onboarding guide when the app is opened for the first time
+
+## Filters and Effects
+
+The project includes several image filters and effects:
 
 - Sketch
 - Cartoon
@@ -58,17 +51,13 @@ The application includes several JavaScript-based pixel manipulation filters:
 - Fade
 - Repair Image
 
-## AI-Supported Features
+## AI-Supported Experiments
 
-Some AI-supported features were tested with TensorFlow.js and COCO-SSD:
+I experimented with TensorFlow.js and COCO-SSD for AI-supported image features. The object detection feature can detect objects on the uploaded image and draw bounding boxes around them.
 
-- Object detection
-- Drawing bounding boxes around detected objects
-- Basic background removal approach
+Some AI-related parts, such as style transfer, face beautification, portrait effects, and smart enhancement, are still prototype-level ideas in the codebase. I kept them in the project because they show the direction I wanted to explore, but they may need more stable model integration before being treated as production-ready features.
 
-Some advanced AI ideas are included as prototypes in the codebase. Style transfer, face beautification, portrait effects, and smart enhancement may require additional model files or more stable library integrations.
-
-## Technologies
+## Tech Stack
 
 - HTML5
 - CSS3
@@ -82,9 +71,14 @@ Some advanced AI ideas are included as prototypes in the codebase. Style transfe
 
 ## Architecture
 
-The project uses a feature-based ES Modules architecture that is compatible with modern browsers. The core image processing logic is kept in `script.js`, while the chatbot, onboarding flow, and shared DOM helpers are organized under the `src/` directory.
+The image processing and canvas editing logic is mostly kept in `script.js`. Newer UI features are organized under `src/` using a feature-based ES Modules structure:
 
-Detailed architecture documentation: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- `src/app.js` initializes the modular features.
+- `src/features/chatbot/chatbot.js` contains the Image Assistant logic.
+- `src/features/onboarding/onboarding.js` contains the first-visit onboarding flow.
+- `src/shared/dom.js` contains small reusable DOM helpers.
+
+More details are available in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Project Structure
 
@@ -97,7 +91,10 @@ Detailed architecture documentation: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md
 ├── background.jpg
 ├── batuhan-profile.jpeg
 ├── docs
-│   └── ARCHITECTURE.md
+│   ├── ARCHITECTURE.md
+│   └── screenshots
+│       ├── chatbot-assistant.png
+│       └── main-editor.png
 ├── src
 │   ├── app.js
 │   ├── features
@@ -112,40 +109,31 @@ Detailed architecture documentation: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md
     └── navbar.css
 ```
 
-## How to Run
+## How to Run Locally
 
-1. Download or clone the project folder.
-2. Start a small local server inside the project folder:
+Because the project uses ES Modules, it should be opened through a small local server instead of opening `index.html` directly.
 
 ```bash
 python3 -m http.server 8000
 ```
 
-3. Open `http://localhost:8000/` in your browser.
-4. Upload an image.
-5. Select a filter or effect from the left menu.
-6. Download the edited image as PNG or JPG.
+Then open:
 
-You can also use the Image Assistant button in the bottom-right corner to get filter recommendations and guidance based on the visual style you want.
+```text
+http://localhost:8000/
+```
 
-Some AI-supported features load models from CDNs, so an internet connection may be required.
+## Notes
 
-## Developer
+- The Image Assistant does not use any paid API or API key. It is a rule-based chatbot that runs in the browser.
+- Some AI-supported features load external libraries or models from CDNs, so they may require an internet connection.
+- This is an academic and portfolio project. Some experimental features are included to show possible future development directions.
 
-This project was developed by Batuhan Karatobak. The image processing functions, Canvas filter logic, editing tools, interface flow, chatbot assistant, onboarding feature, and user interactions were designed and implemented as part of an individual graduation project.
+## Future Improvements
 
-## Development Status
-
-The project is publishable, but some areas can still be improved:
-
-- Improve the stability of advanced AI filters.
-- Complete missing model connections and library requirements.
-- Test the mobile layout in more detail.
-- Optimize performance for large images.
-- Move more image processing code into dedicated modules.
-- Replace inline HTML event handlers with modular JavaScript event bindings.
-- Update social media links with real profile URLs.
-
-## Note
-
-This project was developed for academic and portfolio purposes. It includes working features as well as some experimental features that are still in progress.
+- Move more image processing logic into smaller modules.
+- Replace inline HTML event handlers with modular JavaScript event listeners.
+- Improve mobile responsiveness.
+- Add before/after image comparison.
+- Make the AI-supported features more stable.
+- Add automated browser tests for important user flows.
