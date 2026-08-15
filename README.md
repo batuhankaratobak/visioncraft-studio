@@ -4,6 +4,12 @@ VisionCraft Studio is a browser-based image filtering and photo editing applicat
 
 The project is built with HTML, CSS, JavaScript, the Canvas API, and a lightweight feature-based ES Modules structure. I also added a small rule-based Image Assistant that helps users choose filters based on the style they want.
 
+## Live Demo
+
+You can try the project here:
+
+[VisionCraft Studio Live Demo](https://visioncraft-studio-app.vercel.app/index.html)
+
 ## Screenshots
 
 ### Main Editor
