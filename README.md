@@ -37,6 +37,22 @@ You can try the project here:
 
 ## Filters and Effects
 
+
+- Upload an image and preview it on a canvas
+- Apply classic image filters
+- Adjust brightness and contrast
+- Rotate and flip images
+- Crop and resize selected areas
+- Use undo and redo
+- Draw on the image
+- Use an eraser
+- Add and resize stickers
+- Export the result as PNG or JPG
+- Get filter suggestions from the built-in Image Assistant
+- See a short onboarding guide when the app is opened for the first time
+
+## Filters and Effects
+
 The project includes several image filters and effects:
 
 - Sketch
@@ -63,6 +79,11 @@ I experimented with TensorFlow.js and COCO-SSD for AI-supported image features. 
 
 Some AI-related parts, such as style transfer, face beautification, portrait effects, and smart enhancement, are still prototype-level ideas in the codebase. I kept them in the project because they show the direction I wanted to explore, but they may need more stable model integration before being treated as production-ready features.
 
+
+I experimented with TensorFlow.js and COCO-SSD for AI-supported image features. The object detection feature can detect objects on the uploaded image and draw bounding boxes around them.
+
+Some AI-related parts, such as style transfer, face beautification, portrait effects, and smart enhancement, are still prototype-level ideas in the codebase. I kept them in the project because they show the direction I wanted to explore, but they may need more stable model integration before being treated as production-ready features.
+
 ## Tech Stack
 
 - HTML5
@@ -78,6 +99,12 @@ Some AI-related parts, such as style transfer, face beautification, portrait eff
 ## Architecture
 
 The image processing and canvas editing logic is mostly kept in `script.js`. Newer UI features are organized under `src/` using a feature-based ES Modules structure:
+
+- `src/app.js` initializes the modular features.
+- `src/features/chatbot/chatbot.js` contains the Image Assistant logic.
+- `src/features/onboarding/onboarding.js` contains the first-visit onboarding flow.
+- `src/shared/dom.js` contains small reusable DOM helpers.
+
 
 - `src/app.js` initializes the modular features.
 - `src/features/chatbot/chatbot.js` contains the Image Assistant logic.
